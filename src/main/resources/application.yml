@@ -1,0 +1,29 @@
+server:
+  port: 9899
+
+spring:
+  application:
+    name: Energy
+  profiles:
+    active: dev
+
+app:
+  schedule:
+    enabled: true  # 是否开启定时任务
+
+http:
+  client:
+    connect-timeout: 10000  # 连接超时（毫秒）
+    read-timeout: 30000     # 读取超时（毫秒）
+
+# 日志配置
+logging:
+  level:
+    root: INFO
+    com.pdsu.energy: DEBUG
+    org.springframework.web.client.RestTemplate: DEBUG
+    org.springframework.http.client: DEBUG
+
+
+
+

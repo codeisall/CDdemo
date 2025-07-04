@@ -1,0 +1,62 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/energy_db?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: root
+    password: password
+
+  data:
+    redis:
+      database: 0
+      host: localhost
+      port: 6379
+      timeout: 3000ms
+      lettuce:
+        pool:
+          max-active: 20
+          max-wait: -1ms
+          max-idle: 10
+          min-idle: 0
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+  type-aliases-package: com.pdsu.charge_palteform.entity
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      id-type: auto
+# 电能服务平台配置
+energy:
+  platform:
+    # 运营商标识和秘钥
+    operatorId:
+    operatorSecret:
+    # 加解密配置 (必须确保16个字符的长度)
+    dataSecret:
+    dataSecretIV:
+    sigSecret:
+    # 平台接口配置
+    baseUrl:
+    # token相关
+    tokenCacheExpire: 7000  # 单位：秒，比实际token有效期短 
+
+# 日志配置
+logging:
+  level:
+    com.pdsu.charge_palteform: debug
+    root: info
+
+# 微信小程序配置
+wechat:
+  miniapp:
+    appid:
+    secret:
+
+# JWT配置
+jwt:
+  secret: charging_platform_secret_key_123456789
+  expiration: 7200000 # 2小时
+
+

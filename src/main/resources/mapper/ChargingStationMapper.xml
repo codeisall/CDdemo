@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pdsu.charge_palteform.mapper.ChargingStationMapper">
+
+    <select id="findNearbyStations" resultType="com.pdsu.charge_palteform.entity.ChargingStation">
+        SELECT
+            *,
+            (6371 * acos(
+                    cos(radians(#{latitude})) *
+                    cos(radians(latitude)) *
+                    cos(radians(longitude) - radians(#{longitude})) +
+                    sin(radians(#{latitude})) *
+                    sin(radians(latitude))
+                    ) AS distance
+        FROM charging_stations
+        WHERE
+            station_status = 2
+            AND latitude IS NOT NULL
+            AND longitude IS NOT NULL
+        HAVING distance &lt;= #{radius}
+                 ORDER BY distance
+                 LIMIT #{offset}, #{size}
+    </select>
+
+    <!-- 统计附近充电站数量 -->
+    <select id="countNearbyStations" resultType="java.lang.Long">
+        SELECT COUNT(*) FROM (
+                                 SELECT
+                                     (6371 * acos(
+                                             cos(radians(#{latitude})) *
+                                             cos(radians(latitude)) *
+                                             cos(radians(longitude) - radians(#{longitude})) +
+                                             sin(radians(#{latitude})) *
+                                             sin(radians(latitude))
+                                             ) AS distance
+            FROM charging_stations
+            WHERE
+                station_status = 2
+                AND latitude IS NOT NULL
+                AND longitude IS NOT NULL
+            HAVING distance &lt;= #{radius}
+                                         ) t
+    </select>
+
+</mapper>
